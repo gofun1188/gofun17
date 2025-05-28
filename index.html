@@ -811,7 +811,7 @@ src="https://www.facebook.com/tr?id=1188814919377145&ev=PageView&noscript=1"
         </section>
     </div>
 
-    <a href="https://97y.me/5DbNf" class="floating-register-btn" target="_blank" id="registerBtn">立即註冊</a>
+    <a href="https://97y.me/5DbNf" class="floating-register-btn" target="_blank" id="registerBtn" data-fb-track="CompleteRegistration">立即註冊</a>
 
     <script>
         async function updateLinkByLocation() {
@@ -942,6 +942,54 @@ src="https://www.facebook.com/tr?id=1188814919377145&ev=PageView&noscript=1"
             });
         }
 
+        // 修改后的注册按钮点击事件处理，包含Facebook标准事件追踪
+        function setupRegisterButtonTracking() {
+            const registerBtn = document.getElementById('registerBtn');
+            
+            registerBtn.addEventListener('click', function(e) {
+                // Facebook标准事件追踪 - CompleteRegistration
+                if (typeof fbq !== 'undefined') {
+                    fbq('track', 'CompleteRegistration', {
+                        content_name: 'GoFun X MT真人注册',
+                        content_category: '在线娱乐',
+                        value: 0.00,
+                        currency: 'USD',
+                        content_ids: ['gofun_register'],
+                        contents: [{
+                            id: 'gofun_register',
+                            quantity: 1
+                        }]
+                    });
+                    
+                    // 也可以同时追踪Lead事件，获得更多数据
+                    fbq('track', 'Lead', {
+                        content_name: 'GoFun注册按钮点击',
+                        content_category: '游戏平台',
+                        value: 0.00,
+                        currency: 'USD'
+                    });
+                }
+                
+                // 原有的涟漪效果代码
+                const ripple = document.createElement('div');
+                ripple.style.position = 'absolute';
+                ripple.style.background = 'rgba(255, 255, 255, 0.6)';
+                ripple.style.borderRadius = '50%';
+                ripple.style.transform = 'scale(0)';
+                ripple.style.animation = 'ripple 0.6s linear';
+                ripple.style.left = (e.offsetX - 10) + 'px';
+                ripple.style.top = (e.offsetY - 10) + 'px';
+                ripple.style.width = '20px';
+                ripple.style.height = '20px';
+
+                this.appendChild(ripple);
+
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             createParticles();
             createPhoneModelGallery();
@@ -949,39 +997,12 @@ src="https://www.facebook.com/tr?id=1188814919377145&ev=PageView&noscript=1"
             updateLinkByLocation();
             setTimeout(updateLinkByLocationBackup, 2000);
             setInterval(nextPhoneModelSlide, 2500);
+            
+            // 设置注册按钮的Facebook事件追踪
+            setupRegisterButtonTracking();
         });
 
         window.addEventListener('scroll', handleScrollAnimation);
-
-        document.querySelector('.floating-register-btn').addEventListener('click', function(e) {
-    // Facebook标准事件追踪
-    if (typeof fbq !== 'undefined') {
-        fbq('track', 'CompleteRegistration', {
-            content_name: 'GoFun X MT真人注册',
-            content_category: '在线娱乐',
-            value: 0.00,
-            currency: 'USD'
-        });
-    }
-    
-    // 原有的涟漪效果代码
-    const ripple = document.createElement('div');
-    ripple.style.position = 'absolute';
-    ripple.style.background = 'rgba(255, 255, 255, 0.6)';
-    ripple.style.borderRadius = '50%';
-    ripple.style.transform = 'scale(0)';
-    ripple.style.animation = 'ripple 0.6s linear';
-    ripple.style.left = (e.offsetX - 10) + 'px';
-    ripple.style.top = (e.offsetY - 10) + 'px';
-    ripple.style.width = '20px';
-    ripple.style.height = '20px';
-
-    this.appendChild(ripple);
-
-    setTimeout(() => {
-        ripple.remove();
-    }, 600);
-});
 
         let touchStartX = 0;
         let touchEndX = 0;

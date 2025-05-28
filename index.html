@@ -954,23 +954,34 @@ src="https://www.facebook.com/tr?id=1188814919377145&ev=PageView&noscript=1"
         window.addEventListener('scroll', handleScrollAnimation);
 
         document.querySelector('.floating-register-btn').addEventListener('click', function(e) {
-            const ripple = document.createElement('div');
-            ripple.style.position = 'absolute';
-            ripple.style.background = 'rgba(255, 255, 255, 0.6)';
-            ripple.style.borderRadius = '50%';
-            ripple.style.transform = 'scale(0)';
-            ripple.style.animation = 'ripple 0.6s linear';
-            ripple.style.left = (e.offsetX - 10) + 'px';
-            ripple.style.top = (e.offsetY - 10) + 'px';
-            ripple.style.width = '20px';
-            ripple.style.height = '20px';
-
-            this.appendChild(ripple);
-
-            setTimeout(() => {
-                ripple.remove();
-            }, 600);
+    // Facebook标准事件追踪
+    if (typeof fbq !== 'undefined') {
+        fbq('track', 'CompleteRegistration', {
+            content_name: 'GoFun X MT真人注册',
+            content_category: '在线娱乐',
+            value: 0.00,
+            currency: 'USD'
         });
+    }
+    
+    // 原有的涟漪效果代码
+    const ripple = document.createElement('div');
+    ripple.style.position = 'absolute';
+    ripple.style.background = 'rgba(255, 255, 255, 0.6)';
+    ripple.style.borderRadius = '50%';
+    ripple.style.transform = 'scale(0)';
+    ripple.style.animation = 'ripple 0.6s linear';
+    ripple.style.left = (e.offsetX - 10) + 'px';
+    ripple.style.top = (e.offsetY - 10) + 'px';
+    ripple.style.width = '20px';
+    ripple.style.height = '20px';
+
+    this.appendChild(ripple);
+
+    setTimeout(() => {
+        ripple.remove();
+    }, 600);
+});
 
         let touchStartX = 0;
         let touchEndX = 0;
